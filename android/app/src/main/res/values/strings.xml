@@ -1,4 +1,7 @@
 <resources>
-    <string name="app_name">Abc</string>
+    <string name="app_name">Азбука Вкуса</string>
     <string name="service_name">Abc</string>
+    <string name="title_login">Логин</string>
+    <string name="title_password">Пароль</string>
+    <string name="btn_login">Вход</string>
 </resources>
