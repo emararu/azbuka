@@ -1,15 +1,9 @@
 package ru.toolstrek.core;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-
-import ru.toolstrek.activity.MainActivity;
-import ru.toolstrek.activity.R;
 
 /**
  * Загрузка приложения как сервиса
