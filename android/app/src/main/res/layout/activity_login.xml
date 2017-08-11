@@ -8,8 +8,8 @@
     tools:context="ru.toolstrek.activity.LoginActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -78,7 +78,7 @@
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="0dp"
-                android:layout_height="35dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="28dp"
                 android:background="@color/colorButton"
                 android:onClick="onClickLogin"

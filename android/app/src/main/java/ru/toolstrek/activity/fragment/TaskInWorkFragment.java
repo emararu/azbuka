@@ -1,14 +1,19 @@
 package ru.toolstrek.activity.fragment;
 
+import ru.toolstrek.activity.R;
+import ru.toolstrek.core.AbcURLRequest;
+
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-
-import ru.toolstrek.activity.R;
+import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +23,7 @@ import ru.toolstrek.activity.R;
  * Use the {@link TaskInWorkFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskInWorkFragment extends Fragment {
+public class TaskInWorkFragment extends Fragment implements OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -62,10 +67,17 @@ public class TaskInWorkFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_task_in_work, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_task_in_work, container, false);
+        Button btnCheckLogin = (Button) view.findViewById(R.id.btnCheckLogin);
+        btnCheckLogin.setOnClickListener(this);
+        Button btnLogin = (Button) view.findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(this);
+        Button btnLogout = (Button) view.findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(this);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,4 +118,84 @@ public class TaskInWorkFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btnCheckLogin:
+                try {
+                    new HttpRequestTask().execute();
+                 } catch (Exception e) {
+                    TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+                    textTitle.setText("Error1: "+e.getMessage()+"; "+e.toString());
+                 }
+                 break;
+            case R.id.btnLogin:
+                try {
+                    new HttpRequestTask2().execute();
+                } catch (Exception e) {
+                    TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+                    textTitle.setText("Error3: "+e.getMessage()+"; "+e.toString());
+                }
+                break;
+            case R.id.btnLogout:
+                try {
+                    new HttpRequestTask3().execute();
+                } catch (Exception e) {
+                    TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+                    textTitle.setText("Error4: "+e.getMessage()+"; "+e.toString());
+                }
+                break;
+        }
+    }
+
+    private class HttpRequestTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            //("http://rest-service.guides.spring.io/greeting");//
+            AbcURLRequest request = AbcURLRequest.getInstance();
+            return request.request("https://jira.toolstrek.ru/rest/auth/1/session", "GET", null);
+            //return request.request("https://jira.toolstrek.ru/rest/api/2/project", "GET", null);
+        }
+
+        @Override
+        protected void onPostExecute(String str) {
+            TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+            textTitle.setText(str);
+        }
+
+    }
+
+    private class HttpRequestTask2 extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            AbcURLRequest request = AbcURLRequest.getInstance();
+            String p = "{\"username\":\"kristina\", \"password\":\"kristina\"}";
+            return request.request("https://jira.toolstrek.ru/rest/auth/1/session", "POST", p);
+        }
+
+        @Override
+        protected void onPostExecute(String str) {
+            TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+            textTitle.setText(str);
+        }
+
+    }
+
+    private class HttpRequestTask3 extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... params) {
+            AbcURLRequest request = AbcURLRequest.getInstance();
+            return request.request("https://jira.toolstrek.ru/rest/auth/1/session", "DELETE", "{}");
+        }
+
+        @Override
+        protected void onPostExecute(String str) {
+            TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+            textTitle.setText(str);
+        }
+
+    }
+
 }

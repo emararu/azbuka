@@ -18,6 +18,11 @@ import android.widget.TextView;
 import ru.toolstrek.activity.fragment.TaskActiveFragment;
 import ru.toolstrek.activity.fragment.TaskInWorkFragment;
 
+/**
+ * Основной экран приложения
+ *
+ * Created by EMararu on 03.07.2017.
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
                    TaskActiveFragment.OnFragmentInteractionListener,
