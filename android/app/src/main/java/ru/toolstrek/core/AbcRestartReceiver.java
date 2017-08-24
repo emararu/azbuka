@@ -48,7 +48,7 @@ public class AbcRestartReceiver extends BroadcastReceiver {
             // intent
             PendingIntent intentExecuted = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
             Calendar now = Calendar.getInstance();
-            alarmManager.setInexactRepeating(AlarmManager.RTC, now.getTimeInMillis(), 10 * 1000, intentExecuted);
+            alarmManager.setInexactRepeating(AlarmManager.RTC, now.getTimeInMillis(), 30 * 60 * 1000, intentExecuted);
         }
     }
 
