@@ -39,4 +39,10 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
+
 }

@@ -1,11 +1,11 @@
 package ru.toolstrek.activity.fragment;
 
 import ru.toolstrek.activity.R;
-import ru.toolstrek.core.AbcURLRequest;
+import ru.toolstrek.core.AbcURLRequestParam;
+import ru.toolstrek.core.AbcURLRequestAsync;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +14,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -125,77 +128,41 @@ public class TaskInWorkFragment extends Fragment implements OnClickListener {
         switch (view.getId()) {
             case R.id.btnCheckLogin:
                 try {
-                    new HttpRequestTask().execute();
+                    String result = new AbcURLRequestAsync(this.getActivity().getApplicationContext()).execute(new AbcURLRequestParam("https://jira.toolstrek.ru/rest/auth/1/session", "GET", null)).get();
+                    TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+                    textTitle.setText("Result1: "+ result);
                  } catch (Exception e) {
                     TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
                     textTitle.setText("Error1: "+e.getMessage()+"; "+e.toString());
                  }
                  break;
+
             case R.id.btnLogin:
                 try {
-                    new HttpRequestTask2().execute();
+                    Map<String, String> param = new HashMap<>();
+                    param.put("username", "kristina");
+                    param.put("password", "kristina");
+                    String result = new AbcURLRequestAsync(this.getActivity().getApplicationContext()).execute(new AbcURLRequestParam("https://jira.toolstrek.ru/rest/auth/1/session", "POST", param)).get();
+                    TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+                    textTitle.setText("Result2: "+ result);
                 } catch (Exception e) {
                     TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
                     textTitle.setText("Error3: "+e.getMessage()+"; "+e.toString());
                 }
                 break;
+
             case R.id.btnLogout:
                 try {
-                    new HttpRequestTask3().execute();
+                    Map<String, String> param = new HashMap<>();
+                    String result = new AbcURLRequestAsync(this.getActivity().getApplicationContext()).execute(new AbcURLRequestParam("https://jira.toolstrek.ru/rest/auth/1/session", "DELETE", param)).get();
+                    TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
+                    textTitle.setText("Result3: "+ result);
                 } catch (Exception e) {
                     TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
                     textTitle.setText("Error4: "+e.getMessage()+"; "+e.toString());
                 }
                 break;
         }
-    }
-
-    private class HttpRequestTask extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... params) {
-            //("http://rest-service.guides.spring.io/greeting");//
-            AbcURLRequest request = AbcURLRequest.getInstance();
-            return request.request("https://jira.toolstrek.ru/rest/auth/1/session", "GET", null);
-            //return request.request("https://jira.toolstrek.ru/rest/api/2/project", "GET", null);
-        }
-
-        @Override
-        protected void onPostExecute(String str) {
-            TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
-            textTitle.setText(str);
-        }
-
-    }
-
-    private class HttpRequestTask2 extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... params) {
-            AbcURLRequest request = AbcURLRequest.getInstance();
-            String p = "{\"username\":\"kristina\", \"password\":\"kristina\"}";
-            return request.request("https://jira.toolstrek.ru/rest/auth/1/session", "POST", p);
-        }
-
-        @Override
-        protected void onPostExecute(String str) {
-            TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
-            textTitle.setText(str);
-        }
-
-    }
-
-    private class HttpRequestTask3 extends AsyncTask<Void, Void, String> {
-        @Override
-        protected String doInBackground(Void... params) {
-            AbcURLRequest request = AbcURLRequest.getInstance();
-            return request.request("https://jira.toolstrek.ru/rest/auth/1/session", "DELETE", "{}");
-        }
-
-        @Override
-        protected void onPostExecute(String str) {
-            TextView textTitle = (TextView) getView().findViewById(R.id.textTitle);
-            textTitle.setText(str);
-        }
-
     }
 
 }
